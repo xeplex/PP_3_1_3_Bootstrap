@@ -52,7 +52,9 @@ public class AdminController {
         }
         model.addAttribute("users", users);
         model.addAttribute("username", username);
-        return "users";
+        List<Role> roles = roleService.getAll();
+        model.addAttribute("allRoles", roles);
+        return "newUsers";
     }
 
 
