@@ -50,16 +50,6 @@
             margin-right: 5px;
         }
 
-        .full-width-button {
-            width: 20%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: 1px solid black;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
     </style>
 </head>
 <body>
@@ -88,7 +78,7 @@
             <a href="#" class="nav-link bg-primary text-white rounded-4 w-100 roleLink" data-role="Admin">Admin</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link rounded-4 w-100 roleLink" data-role="User ">User</a>
+            <a href="#" class="nav-link rounded-4 w-100 roleLink" data-role="User">User</a>
         </li>
     </ul>
 </div>
@@ -97,7 +87,7 @@
     <div>
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="tab" href="#userTable">User  table</a>
+                <a class="nav-link active" data-bs-toggle="tab" href="#userTable">User table</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#newUser">New user</a>
@@ -130,18 +120,19 @@
                             </span>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editUserModal"
-                                    th:attr="data-user-id=${user.id}, data-user-username=${user.username}, data-user-email=${user.email}">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#editUserModal"
+                                    th:attr="data-user-id=${user.id}, data-user-username=${user.username}, data-user-email=${user.email}, data-user-roles=${user.roles}">
                                 EDIT
                             </button>
                         </td>
                         <td>
                             <div style="display: inline-block; margin-right: 10px;">
-                                <form th:action="@{/admin/deleteUser}" method="post">
-                                    <input type="hidden" name="_method" value="DELETE">
-                                    <input type="hidden" name="id" th:value="${user.id}"/>
-                                    <button type="submit" class="red-button">DELETE</button>
-                                </form>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                        data-bs-target="#deleteUserModal"
+                                        th:attr="data-user-id=${user.id}, data-user-username=${user.username}, data-user-email=${user.email}, data-user-roles=${user.roles}">
+                                    DELETE
+                                </button>
                             </div>
                         </td>
                     </tr>
@@ -152,18 +143,22 @@
                 <h3 class="ps-3 p-2" style="background-color: #E9ECEF;">Add new user</h3>
                 <div class="row justify-content-center">
                     <div class="col-md-5">
-                        <form class="p-3 add-user-form" th:method="POST" th:action="@{/admin/saveUser}" th:object="${user}">
+                        <form class="p-3 add-user-form" th:method="POST" th:action="@{/admin/saveUser}"
+                              th:object="${user}">
                             <div class="mb-3">
                                 <label for="new_email" class="form-label fw-bold d-block text-center">Username</label>
-                                <input th:field="*{username}" type="text" class="form-control" id="new_username" required>
+                                <input th:field="*{username}" type="text" class="form-control" id="new_username"
+                                       required>
                             </div>
                             <div class="mb-3">
                                 <label for="new_email" class="form-label fw-bold d-block text-center">Email</label>
                                 <input th:field="*{email}" type="email" class="form-control" id="new_email" required>
                             </div>
                             <div class="mb-3">
-                                <label for="new_password" class="form-label fw-bold d-block text-center">Password</label>
-                                <input th:field="*{password}" type="password" class="form-control" id="new_password" required>
+                                <label for="new_password"
+                                       class="form-label fw-bold d-block text-center">Password</label>
+                                <input th:field="*{password}" type="password" class="form-control" id="new_password"
+                                       required>
                             </div>
                             <div class="mb-3">
                                 <label for="new_role" class="form-label fw-bold d-block text-center">Role</label>
@@ -187,43 +182,87 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editUser ModalLabel">Edit User</h5>
+                        <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form th:action="@{/admin/updateUser}" method="post">
+                            <input type="hidden" name="_method" value="PATCH">
+                            <input type="hidden" id="editUserId" name="id">
                             <div class="mb-3 row">
                                 <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
-                                    <label for="editUser Id" class="form-label fw-bold">User  ID</label>
-                                    <input type="text" class="form-control" id="editUser Id" disabled>
+                                    <label for="editUsername" class="form-label fw-bold">Username</label>
+                                    <input type="text" class="form-control" id="editUsername" name="username" required>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
                                     <label for="editEmail" class="form-label fw-bold">Email</label>
-                                    <input type="email" class="form-control" id="editEmail">
+                                    <input type="email" class="form-control" id="editEmail" name="email" required>
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
                                     <label for="editPassword" class="form-label fw-bold">Password</label>
-                                    <input type="password" class="form-control" id="editPassword">
+                                    <input type="password" class="form-control" id="editPassword" name="password">
                                 </div>
                             </div>
                             <div class="mb-3 row">
                                 <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
                                     <label for="editRole" class="form-label fw-bold">Role</label>
-                                    <select class="form-select" id="editRole" multiple size="2">
-                                        <option value="Admin">ADMIN</option>
-                                        <option value="User ">USER</option>
+                                    <select class="form-select" id="editRole" name="roles" multiple size="2">
+                                        <option value="1">ADMIN</option>
+                                        <option value="2">USER</option>
                                     </select>
                                 </div>
                             </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary save-changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUserModalLabel">Delete User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/deleteUser}" method="post">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" id="deleteUserId" name="id">
+                            <div class="mb-3 row">
+                                <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
+                                    <label for="editUsername" class="form-label fw-bold">Username</label>
+                                    <input type="text" class="form-control" id="deleteUsername" name="username" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
+                                    <label for="editEmail" class="form-label fw-bold">Email</label>
+                                    <input type="email" class="form-control" id="deleteEmail" name="email" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
+                                    <label for="editRole" class="form-label fw-bold">Role</label>
+                                    <select class="form-select" id="deleteRole" name="roles" multiple size="2" disabled>
+                                        <option value="1">ADMIN</option>
+                                        <option value="2">USER</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CLOSE</button>
+                                <button type="submit" class="btn btn-danger">DELETE</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -239,5 +278,48 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
         integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
         crossorigin="anonymous"></script>
+<script>
+    var editUserModal = document.getElementById('editUserModal');
+    editUserModal.addEventListener('show.bs.modal', function (event) {
+
+        var button = event.relatedTarget;
+
+        var userId = button.getAttribute('data-user-id');
+        var username = button.getAttribute('data-user-username');
+        var email = button.getAttribute('data-user-email');
+        var roles = button.getAttribute('data-user-roles');
+
+        var modalBodyInputId = editUserModal.querySelector('#editUserId');
+        var modalBodyInputEmail = editUserModal.querySelector('#editEmail');
+        var modalBodyInputUsername = editUserModal.querySelector('#editUsername');
+        var modalBodyInputRoles = editUserModal.querySelector('#editRoles');
+        modalBodyInputId.value = userId;
+        modalBodyInputEmail.value = email;
+        modalBodyInputUsername.value = username;
+        modalBodyInputRoles.value = roles;
+    });
+
+    var deleteUserModal = document.getElementById('deleteUserModal');
+    deleteUserModal.addEventListener('show.bs.modal', function (event) {
+
+        var button = event.relatedTarget;
+
+        var userId = button.getAttribute('data-user-id');
+        var username = button.getAttribute('data-user-username');
+        var email = button.getAttribute('data-user-email');
+        var roles = button.getAttribute('data-user-roles');
+
+        var modalBodyInputId = deleteUserModal.querySelector('#deleteUserId');
+        var modalBodyInputEmail = deleteUserModal.querySelector('#deleteEmail');
+        var modalBodyInputUsername = deleteUserModal.querySelector('#deleteUsername');
+        var modalBodyInputRoles = deleteUserModal.querySelector('#deleteRoles');
+        modalBodyInputId.value = userId;
+        modalBodyInputEmail.value = email;
+        modalBodyInputUsername.value = username;
+        modalBodyInputRoles.value = roles;
+    });
+
+
+</script>
 </body>
 </html>

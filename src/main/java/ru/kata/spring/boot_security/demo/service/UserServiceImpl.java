@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserRepository;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -52,14 +53,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void update(User user, Long id) {
         User existingUser = getById(id);
-        existingUser.setUsername(user.getUsername());
-        existingUser.setEmail(user.getEmail());
-        existingUser.setRoles(user.getRoles());
-        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
-            existingUser.setPassword(encodedPassword);
+        if (existingUser != null) {
+            existingUser.setUsername(user.getUsername());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setRoles(user.getRoles());
+            if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(user.getPassword());
+                existingUser.setPassword(encodedPassword);
+            }
+            userRepository.save(existingUser);
+        } else {
+            throw new EntityNotFoundException("User  with id " + id + " not found.");
         }
-        userRepository.save(existingUser);
     }
 
 
