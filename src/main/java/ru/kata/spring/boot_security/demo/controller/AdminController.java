@@ -26,14 +26,12 @@ public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final ValidateUserService validateUserService;
 
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService, ValidateUserService validateUserService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.validateUserService = validateUserService;
     }
 
     @GetMapping
@@ -54,58 +52,11 @@ public class AdminController {
         model.addAttribute("username", username);
         List<Role> roles = roleService.getAll();
         model.addAttribute("allRoles", roles);
-        return "newUsers";
-    }
-
-
-    @GetMapping("/showInfo")
-    public String info(@RequestParam Long id, Model model) {
-        User user = userService.getById(id);
-        model.addAttribute("user", userService.getById(id));
-        List<Role> userRoles = (List<Role>) user.getRoles();
-        model.addAttribute("userRoles", userRoles);
-        return "userForAdmins";
-    }
-
-    @GetMapping("/addNewUser")
-    public String addNewUser(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
-        List<Role> roles = roleService.getAll();
-        model.addAttribute("allRoles", roles);
-        return "user-info";
-    }
-
-    @GetMapping("/editUser")
-    public String editUser(@RequestParam("id") Long id, Model model) {
-        User user = userService.getById(id);
-        model.addAttribute("user", user);
-        List<Role> roles = roleService.getAll();
-        model.addAttribute("allRoles", roles);
-        return "update";
-    }
-
-    @GetMapping("/cancel")
-    public String cancel() {
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/back")
-    public String back() {
-        return "redirect:/admin";
+        return "users";
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model) {
-        validateUserService.validateByUsernameAndEmail(user, bindingResult, null);
-        if (bindingResult.hasErrors()) {
-            List<Role> roles = roleService.getAll();
-            model.addAttribute("allRoles", roles);
-            return "user-info";
-        }
-        if (validateUserService.validateByRoles(user, bindingResult, model)) {
-            return "user-info";
-        }
+    public String saveUser(@Valid @ModelAttribute("user") User user) {
         userService.save(user);
         return "redirect:/admin";
     }
@@ -117,18 +68,8 @@ public class AdminController {
     }
 
     @PatchMapping("/updateUser")
-    public String updateUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult,
-                             @RequestParam("id") Long id,
-                             Model model) {
-        validateUserService.validateByUsernameAndEmail(user, bindingResult, id);
-        if (bindingResult.hasFieldErrors("username") || bindingResult.hasFieldErrors("email")) {
-            List<Role> roles = roleService.getAll();
-            model.addAttribute("allRoles", roles);
-            return "update";
-        }
-        if (validateUserService.validateByRoles(user, bindingResult, model)) {
-            return "update";
-        }
+    public String updateUser(@ModelAttribute("user") User user,
+                             @RequestParam("id") Long id) {
         userService.update(user, id);
         return "redirect:/admin";
     }
