@@ -46,15 +46,25 @@ document.querySelectorAll('.roleLink').forEach(link => {
     link.addEventListener('click', function(event) {
         event.preventDefault();
 
+        // Скрываем все панели
         document.getElementById('adminPanel').style.display = 'none';
         document.getElementById('userPanel').style.display = 'none';
 
+        // Удаляем классы активной подсветки у всех ссылок
+        document.querySelectorAll('.roleLink').forEach(l => {
+            l.classList.remove('bg-primary', 'text-white');
+            l.classList.add('text-dark'); // Устанавливаем стандартный цвет текста для неактивных ссылок
+        });
+
+        // Проверка на выбранную роль
         if (this.dataset.role === 'Admin') {
             document.getElementById('adminPanel').style.display = 'block';
-            document.getElementById('panelTitle').textContent = 'Admin panel';
+            document.getElementById('panelTitle').textContent = 'Admin panel'; // Заголовок для админа
+            this.classList.add('bg-primary', 'text-white'); // Подсветка активной вкладки
         } else if (this.dataset.role === 'User ') {
             document.getElementById('userPanel').style.display = 'block';
-            document.getElementById('panelTitle').textContent = 'User information-page';
+            document.getElementById('panelTitle').textContent = 'User  information-page'; // Заголовок для пользователя
+            this.classList.add('bg-primary', 'text-white'); // Подсветка активной вкладки
         }
     });
 });
