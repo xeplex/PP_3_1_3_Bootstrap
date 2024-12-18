@@ -41,3 +41,20 @@ deleteUserModal.addEventListener('show.bs.modal', function (event) {
     modalBodyInputUsername.value = username;
     modalBodyInputRoles.value = roles;
 });
+
+document.querySelectorAll('.roleLink').forEach(link => {
+    link.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        document.getElementById('adminPanel').style.display = 'none';
+        document.getElementById('userPanel').style.display = 'none';
+
+        if (this.dataset.role === 'Admin') {
+            document.getElementById('adminPanel').style.display = 'block';
+            document.getElementById('panelTitle').textContent = 'Admin panel';
+        } else if (this.dataset.role === 'User ') {
+            document.getElementById('userPanel').style.display = 'block';
+            document.getElementById('panelTitle').textContent = 'User information-page';
+        }
+    });
+});
