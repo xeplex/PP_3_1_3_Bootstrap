@@ -76,6 +76,13 @@ public class ValidateUserServiceImpl implements ValidateUserService {
         if (user.getAge() < 1 || user.getAge() > 100) {
             model.addAttribute("errorMessage",
                     "Неверный возраст - возраст должен быть от 1 года до 100 лет");
+            List<User> users = userService.getAll();
+            for (User updated : users) {
+                updated.setRoles(roleService.findRolesByUserId(updated.getId()));
+            }
+            List<Role> roles = roleService.getAll();
+            model.addAttribute("allRoles", roles);
+            model.addAttribute("users", users);
             return true;
         }
         return false;

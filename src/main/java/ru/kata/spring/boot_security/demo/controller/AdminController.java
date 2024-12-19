@@ -53,10 +53,6 @@ public class AdminController {
         addCurrentUserToModel(model, principal);
         if (validateUserService.validateByUsername(user, model) ||
                 validateUserService.validateByEmail(user, model) || validateUserService.validateByAge(user, model)) {
-            List<User> users = userService.getAll();
-            model.addAttribute("users", users);
-            List<Role> roles = roleService.getAll();
-            model.addAttribute("allRoles", roles);
             return "users";
         }
         userService.save(user);
@@ -73,13 +69,6 @@ public class AdminController {
     public String updateUser(@ModelAttribute("user") User user,
                              @RequestParam("id") Long id, Model model) {
         if (validateUserService.validateUpdateUser(user, id, model) || validateUserService.validateByAge(user, model)) {
-            List<User> users = userService.getAll();
-            for (User updated : users) {
-                updated.setRoles(roleService.findRolesByUserId(updated.getId()));
-            }
-            List<Role> roles = roleService.getAll();
-            model.addAttribute("allRoles", roles);
-            model.addAttribute("users", users);
             return "users";
         }
         userService.update(user, id);
