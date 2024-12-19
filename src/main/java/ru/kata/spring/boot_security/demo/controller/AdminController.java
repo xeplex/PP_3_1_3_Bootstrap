@@ -51,10 +51,12 @@ public class AdminController {
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user, Model model, Principal principal) {
         addCurrentUserToModel(model, principal);
-        if (validateUserService.validateByUsername(user, model)) {
-            return "users";
-        }
-        if (validateUserService.validateByEmail(user, model)) {
+        if (validateUserService.validateByUsername(user, model) ||
+                validateUserService.validateByEmail(user, model) || validateUserService.validateByAge(user, model)) {
+            List<User> users = userService.getAll();
+            model.addAttribute("users", users);
+            List<Role> roles = roleService.getAll();
+            model.addAttribute("allRoles", roles);
             return "users";
         }
         userService.save(user);
@@ -70,11 +72,13 @@ public class AdminController {
     @PatchMapping("/updateUser")
     public String updateUser(@ModelAttribute("user") User user,
                              @RequestParam("id") Long id, Model model) {
-        if (validateUserService.validateUpdateUser(user, id, model)) {
+        if (validateUserService.validateUpdateUser(user, id, model) || validateUserService.validateByAge(user, model)) {
             List<User> users = userService.getAll();
             for (User updated : users) {
                 updated.setRoles(roleService.findRolesByUserId(updated.getId()));
             }
+            List<Role> roles = roleService.getAll();
+            model.addAttribute("allRoles", roles);
             model.addAttribute("users", users);
             return "users";
         }

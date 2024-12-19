@@ -60,6 +60,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">USERNAME</th>
                             <th scope="col">EMAIL</th>
+                            <th scope="col">AGE</th>
                             <th scope="col">ROLES</th>
                             <th scope="col">EDIT</th>
                             <th scope="col">DELETE</th>
@@ -70,6 +71,7 @@
                             <td th:text="${user.id}">...</td>
                             <td th:text="${user.username}">...</td>
                             <td th:text="${user.email}">...</td>
+                            <td th:text="${user.age}">...</td>
                             <td>
                             <span>
                                 <span th:each="role, iterStat : ${user.roles}">
@@ -82,7 +84,7 @@
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                                         data-bs-target="#editUserModal"
                                         th:attr="data-user-id=${user.id}, data-user-username=${user.username},
-                                    data-user-email=${user.email}, data-user-roles=${user.roles}">
+                                    data-user-email=${user.email}, data-user-age=${user.age}, data-user-roles=${user.roles}">
                                     EDIT
                                 </button>
                             </td>
@@ -91,7 +93,7 @@
                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                                             data-bs-target="#deleteUserModal"
                                             th:attr="data-user-id=${user.id}, data-user-username=${user.username},
-                                        data-user-email=${user.email}, data-user-roles=${user.roles}">
+                                        data-user-email=${user.email}, data-user-age=${user.age}, data-user-roles=${user.roles}">
                                         DELETE
                                     </button>
                                 </div>
@@ -124,6 +126,15 @@
                                         Пожалуйста, введите корректный адрес электронной почты.
                                     </div>
                                     <div id="email-error" class="text-danger" style="display:none;"></div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="new_age"
+                                           class="form-label fw-bold d-block text-center">Age</label>
+                                    <input th:field="*{age}" type="number" class="form-control" id="new_age"
+                                           required>
+                                    <div class="invalid-feedback">
+                                        Пожалуйста, введите возраст.
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="new_password"
@@ -166,6 +177,7 @@
                             <th scope="col">ID</th>
                             <th scope="col">USERNAME</th>
                             <th scope="col">EMAIL</th>
+                            <th scope="col">AGE</th>
                             <th scope="col">ROLES</th>
                         </tr>
                         </thead>
@@ -174,6 +186,7 @@
                             <td><span th:text="${user.id}"></span></td>
                             <td><span th:text="${user.username}"></span></td>
                             <td><span th:text="${user.email}"></span></td>
+                            <td><span th:text="${user.age}"></span></td>
                             <td>
                             <span>
                                 <span th:each="role, iterStat : ${user.roles}">
@@ -218,6 +231,12 @@
                             <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
                                 <label for="editEmail" class="form-label fw-bold">Email</label>
                                 <input type="email" class="form-control" id="editEmail" name="email" required>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
+                                <label for="editAge" class="form-label fw-bold">Age</label>
+                                <input type="number" class="form-control" id="editAge" name="age" required>
                             </div>
                         </div>
                         <div class="mb-3 row">
@@ -273,6 +292,12 @@
                             <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
                                 <label for="deleteEmail" class="form-label fw-bold">Email</label>
                                 <input type="email" class="form-control" id="deleteEmail" name="email" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 row">
+                            <div class="col-lg-7 mx-auto d-flex flex-column align-items-center">
+                                <label for="deleteAge" class="form-label fw-bold">Age</label>
+                                <input type="number" class="form-control" id="deleteAge" name="email" readonly>
                             </div>
                         </div>
                         <div class="mb-3 row">

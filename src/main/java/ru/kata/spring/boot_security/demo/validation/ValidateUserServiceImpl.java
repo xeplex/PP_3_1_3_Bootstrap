@@ -72,4 +72,13 @@ public class ValidateUserServiceImpl implements ValidateUserService {
         return false;
     }
 
+    public Boolean validateByAge(User user, Model model) {
+        if (user.getAge() < 1 || user.getAge() > 100) {
+            model.addAttribute("errorMessage",
+                    "Неверный возраст - возраст должен быть от 1 года до 100 лет");
+            return true;
+        }
+        return false;
+    }
+
 }

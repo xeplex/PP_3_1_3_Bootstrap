@@ -9,4 +9,6 @@ public interface ValidateUserService {
     Boolean validateByEmail(User user, Model model);
 
     Boolean validateUpdateUser(User user, Long id, Model model);
+
+    Boolean validateByAge(User user, Model model);
 }

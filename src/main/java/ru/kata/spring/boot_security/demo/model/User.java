@@ -34,6 +34,8 @@ public class User implements UserDetails {
 
     private String email;
 
+    private int age;
+
 
     @ManyToMany(fetch = FetchType.LAZY)
     @LazyCollection(LazyCollectionOption.EXTRA)
@@ -74,11 +76,12 @@ public class User implements UserDetails {
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
         return Objects.equals(id, user.id) && Objects.equals(username, user.username)
-                && Objects.equals(password, user.password) && Objects.equals(email, user.email);
+                && Objects.equals(password, user.password) && Objects.equals(email, user.email)
+                && Objects.equals(age, user.age);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, email);
+        return Objects.hash(id, username, password, email, age);
     }
 }
