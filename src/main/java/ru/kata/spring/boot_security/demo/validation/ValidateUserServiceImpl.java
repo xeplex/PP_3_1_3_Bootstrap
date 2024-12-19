@@ -56,9 +56,20 @@ public class ValidateUserServiceImpl implements ValidateUserService {
         return false;
     }
 
+    @Override
+    public Boolean validateUpdateUser(User user, Long id, Model model) {
+        if (userService.existsByUsername(user.getUsername()) &&
+                !userService.findByUsername(user.getUsername()).getId().equals(id)) {
+            model.addAttribute("errorMessage", "Пользователь с таким именем уже существует.");
+            return true;
+        }
+        if (userService.existsByEmail(user.getEmail()) &&
+                !userService.findByEmail(user.getEmail()).getId().equals(id)) {
+            model.addAttribute("errorMessage",
+                    "Пользователь с таким адресом электронной почты уже существует.");
+            return true;
+        }
+        return false;
+    }
+
 }
-
-
-
-
-

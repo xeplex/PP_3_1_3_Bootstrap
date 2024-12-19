@@ -19,30 +19,36 @@ document.addEventListener('DOMContentLoaded', function () {
         if (modalBodyInputEmail) modalBodyInputEmail.value = email;
         if (modalBodyInputUsername) modalBodyInputUsername.value = username;
         if (modalBodyInputRoles) modalBodyInputRoles.value = roles;
-    });
 
-    var deleteUserModal = document.getElementById('deleteUserModal');
-    deleteUserModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-
-        var userId = button.getAttribute('data-user-id');
-        var username = button.getAttribute('data-user-username');
-        var email = button.getAttribute('data-user-email');
-        var roles = button.getAttribute('data-user-roles');
-
-        var modalBodyInputId = deleteUserModal.querySelector('#deleteUserId');
-        var modalBodyInputEmail = deleteUserModal.querySelector('#deleteEmail');
-        var modalBodyInputUsername = deleteUserModal.querySelector('#deleteUsername');
-        var modalBodyInputRoles = deleteUserModal.querySelector('#deleteRoles');
-        var modalBodyId = deleteUserModal.querySelector('#deleteId');
-
-        if (modalBodyInputId) modalBodyInputId.value = userId;
-        if (modalBodyId) modalBodyId.value = userId;
-        if (modalBodyInputEmail) modalBodyInputEmail.value = email;
-        if (modalBodyInputUsername) modalBodyInputUsername.value = username;
-        if (modalBodyInputRoles) modalBodyInputRoles.value = roles;
-    });
+        var errorMessage = document.getElementById('editErrorMessage');
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
 });
+
+var deleteUserModal = document.getElementById('deleteUserModal');
+deleteUserModal.addEventListener('show.bs.modal', function (event) {
+    var button = event.relatedTarget;
+
+    var userId = button.getAttribute('data-user-id');
+    var username = button.getAttribute('data-user-username');
+    var email = button.getAttribute('data-user-email');
+    var roles = button.getAttribute('data-user-roles');
+
+    var modalBodyInputId = deleteUserModal.querySelector('#deleteUserId');
+    var modalBodyInputEmail = deleteUserModal.querySelector('#deleteEmail');
+    var modalBodyInputUsername = deleteUserModal.querySelector('#deleteUsername');
+    var modalBodyInputRoles = deleteUserModal.querySelector('#deleteRoles');
+    var modalBodyId = deleteUserModal.querySelector('#deleteId');
+
+    if (modalBodyInputId) modalBodyInputId.value = userId;
+    if (modalBodyId) modalBodyId.value = userId;
+    if (modalBodyInputEmail) modalBodyInputEmail.value = email;
+    if (modalBodyInputUsername) modalBodyInputUsername.value = username;
+    if (modalBodyInputRoles) modalBodyInputRoles.value = roles;
+});
+})
+;
 
 document.querySelectorAll('.roleLink').forEach(link => {
     link.addEventListener('click', function (event) {

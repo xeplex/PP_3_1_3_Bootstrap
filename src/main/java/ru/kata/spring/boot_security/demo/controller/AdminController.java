@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -70,7 +69,15 @@ public class AdminController {
 
     @PatchMapping("/updateUser")
     public String updateUser(@ModelAttribute("user") User user,
-                             @RequestParam("id") Long id) {
+                             @RequestParam("id") Long id, Model model) {
+        if (validateUserService.validateUpdateUser(user, id, model)) {
+            List<User> users = userService.getAll();
+            for (User updated : users) {
+                updated.setRoles(roleService.findRolesByUserId(updated.getId()));
+            }
+            model.addAttribute("users", users);
+            return "users";
+        }
         userService.update(user, id);
         return "redirect:/admin";
     }
