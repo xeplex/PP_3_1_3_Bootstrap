@@ -34,7 +34,7 @@
             <a href="#" class="nav-link rounded-4 w-100 roleLink bg-primary text-white" data-role="Admin">Admin</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link rounded-4 w-100 roleLink" data-role="User ">User </a>
+            <a href="#" class="nav-link rounded-4 w-100 roleLink" data-role="User">User</a>
         </li>
     </ul>
 </div>
@@ -102,13 +102,16 @@
                 <h3 class="ps-3 p-2" style="background-color: #E9ECEF;">Add new user</h3>
                 <div class="row justify-content-center">
                     <div class="col-md-5">
+                        <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                            <span th:text="${errorMessage}"></span>
+                        </div>
                         <form class="p-3 add-user-form" th:method="POST" th:action="@{/admin/saveUser}"
                               th:object="${user}" novalidate>
                             <div class="mb-3">
                                 <label for="new_username"
                                        class="form-label fw-bold d-block text-center">Username</label>
                                 <input th:field="*{username}" type="text" class="form-control" id="new_username"
-                                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''" required>
+                                       required>
                                 <div class="invalid-feedback">
                                     Пожалуйста, введите имя пользователя.
                                 </div>
@@ -116,8 +119,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="new_email" class="form-label fw-bold d-block text-center">Email</label>
-                                <input th:field="*{email}" type="email" class="form-control" id="new_email"
-                                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''" required>
+                                <input th:field="*{email}" type="email" class="form-control" id="new_email" required>
                                 <div class="invalid-feedback">
                                     Пожалуйста, введите корректный адрес электронной почты.
                                 </div>
@@ -127,7 +129,7 @@
                                 <label for="new_password"
                                        class="form-label fw-bold d-block text-center">Password</label>
                                 <input th:field="*{password}" type="password" class="form-control" id="new_password"
-                                       th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''" required>
+                                       required>
                                 <div class="invalid-feedback">
                                     Пожалуйста, введите пароль.
                                 </div>

@@ -60,9 +60,9 @@ document.querySelectorAll('.roleLink').forEach(link => {
             document.getElementById('adminPanel').style.display = 'block';
             document.getElementById('panelTitle').textContent = 'Admin panel';
             this.classList.add('bg-primary', 'text-white');
-        } else if (this.dataset.role === 'User ') {
+        } else if (this.dataset.role === 'User') {
             document.getElementById('userPanel').style.display = 'block';
-            document.getElementById('panelTitle').textContent = 'User  information-page';
+            document.getElementById('panelTitle').textContent = 'User information-page';
             this.classList.add('bg-primary', 'text-white');
         }
     });
@@ -87,3 +87,13 @@ document.addEventListener('DOMContentLoaded', function () {
         form.classList.add('was-validated');
     }, false);
 })();
+
+document.addEventListener("DOMContentLoaded", function() {
+    const activeTab = /*[[${activeTab}]]*/ 'none';
+    console.log("Active Tab:", activeTab);
+    if (activeTab === 'newUser') {
+        console.log("Active Tab:", activeTab);
+        const tab = new bootstrap.Tab(document.querySelector('#newUser'));
+        tab.show();
+    }
+});
