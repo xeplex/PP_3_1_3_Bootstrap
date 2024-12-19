@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }, false);
 })();
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const activeTab = /*[[${activeTab}]]*/ 'none';
     console.log("Active Tab:", activeTab);
     if (activeTab === 'newUser') {

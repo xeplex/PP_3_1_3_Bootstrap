@@ -4,6 +4,14 @@ body {
     margin: 0;
 }
 
+.navbar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+}
+
 .sidebar {
     position: fixed;
     top: 56px;
@@ -15,17 +23,9 @@ body {
     overflow-y: auto;
 }
 
-.content {
+main {
     margin-left: 200px;
     padding: 1rem;
-    flex-grow: 1;
     margin-top: 56px;
-}
-
-.navbar-fixed {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1030;
+    flex-grow: 1;
 }
